@@ -43,7 +43,7 @@ Este projeto é uma rede social funcional, que conta com um sistema de autentica
 │   │   └── styles
 │   │  
 │   └──tests
-├── .github/workflows
+
 
 
 ## Como Iniciar o Projeto
