@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from './avatar';
 import  Card  from './card/Cards';
 import { Button } from './button';
-import { Heart, MessageCircle, Share2, Bookmark, MoreHorizontal, Loader2, Send, Smile } from 'lucide-react';
+import { Heart, MessageCircle, MoreHorizontal, Loader2, Send, Smile } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -58,12 +58,11 @@ interface PostProps {
   post: PostData;
   onLike: (postId: string) => void;
   onComment: (postId: string) => void;
-  onBookmark: (postId: string) => void;
   onDelete?: (postId: string) => void;
   onCommentSuccess?: (postId: string) => void;
 }
 
-export function Post({ post, onLike, onComment, onBookmark, onDelete, onCommentSuccess }: PostProps) {
+export function Post({ post, onLike, onComment, onDelete, onCommentSuccess }: PostProps) {
   const { user } = useAuth();
   
   /**

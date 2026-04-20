@@ -210,13 +210,7 @@ export function FeedPage() {
     );
   }, []);
 
-  const handleBookmark = useCallback((postId: string) => {
-    setPosts((prev) =>
-      prev.map((post) =>
-        post.id === postId ? { ...post, isBookmarked: !post.isBookmarked } : post
-      )
-    );
-  }, []);
+
 
   //Apaga post via API 
   const handleDelete = useCallback(async (postId: string) => {
@@ -263,7 +257,7 @@ export function FeedPage() {
                 post={post}
                 onLike={handleLike}
                 onComment={handleComment}
-                onBookmark={handleBookmark}
+
                 onDelete={
                   post.user_id === user?.email ? handleDelete : undefined
                 }
