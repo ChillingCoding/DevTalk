@@ -1,0 +1,623 @@
+openapi: 3.0.3
+info:
+  title: appSocial API
+  version: 1.0.0
+  description: |
+    Documentação OpenAPI dos endpoints atuais da appSocial.
+servers:
+  - url: /
+    description: Mesmo host/porta onde a documentação está aberta
+
+tags:
+  - name: Auth
+    description: Endpoints de autenticação
+  - name: Profile
+    description: Endpoints de perfil
+  - name: Feed
+    description: Endpoints do feed de posts
+
+paths:
+  /api/auth/register.php:
+    post:
+      tags: [Auth]
+      summary: Criar conta
+      description: Cria um novo utilizador com nome, email e password.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
+            examples:
+              exemplo:
+                value:
+                  name: "João Silva"
+                  email: "joao@email.com"
+                  password: "SenhaForte#2026"
+      responses:
+        '201':
+          description: Utilizador criado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessMessage'
+              examples:
+                sucesso:
+                  value:
+                    status: success
+                    message: Usuário criado com sucesso!
+        '400':
+          description: Dados em falta, email duplicado ou erro de banco
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '422':
+          description: Validação falhou (email/password)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '500':
+          description: Falha de ligação ao banco
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DbConnectionError'
+
+  /api/auth/login.php:
+    post:
+      tags: [Auth]
+      summary: Login
+      description: Autentica um utilizador pelo email e password.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+            examples:
+              exemplo:
+                value:
+                  email: "joao@email.com"
+                  password: "SenhaForte#2026"
+      responses:
+        '200':
+          description: Login com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginSuccessResponse'
+        '400':
+          description: Dados incompletos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '401':
+          description: Password incorreta
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '404':
+          description: Utilizador não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '500':
+          description: Erro de servidor ou ligação ao banco
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/ErrorMessage'
+                  - $ref: '#/components/schemas/DbConnectionError'
+
+  /api/feed/get-posts.php:
+    get:
+      tags: [Feed]
+      summary: Listar posts do feed
+      description: Devolve todos os posts ordenados do mais recente para o mais antigo. Suporta paginação via `limit` e `offset`.
+      parameters:
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            default: 20
+            minimum: 1
+            maximum: 100
+          description: Número máximo de posts a devolver
+        - in: query
+          name: offset
+          schema:
+            type: integer
+            default: 0
+          description: Número de posts a saltar (paginação)
+      responses:
+        '200':
+          description: Lista de posts
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FeedListResponse'
+        '500':
+          description: Erro de servidor ou base de dados
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DbConnectionError'
+
+  /api/feed/create-post.php:
+    post:
+      tags: [Feed]
+      summary: Criar post no feed
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePostRequest'
+            examples:
+              exemplo:
+                value:
+                  email: "joao@email.com"
+                  descricao: "Olá mundo! 🚀"
+      responses:
+        '201':
+          description: Post criado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreatePostResponse'
+        '404':
+          description: Utilizador não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '405':
+          description: Método não permitido
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '422':
+          description: Validação falhou (user_id ou content)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '500':
+          description: Erro de servidor ou base de dados
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DbConnectionError'
+
+  /api/feed/delete-post.php:
+    delete:
+      tags: [Feed]
+      summary: Apagar post do feed
+      description: Só o dono do post (user_id) pode apagar.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeletePostRequest'
+            examples:
+              exemplo:
+                value:
+                  post_id: 5
+                  user_id: 1
+      responses:
+        '200':
+          description: Post apagado com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessMessage'
+        '403':
+          description: Utilizador não é o dono do post
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '404':
+          description: Post não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '405':
+          description: Método não permitido
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '422':
+          description: Dados em falta ou inválidos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '500':
+          description: Erro de servidor ou base de dados
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DbConnectionError'
+
+  /api/profile/upload-avatar.php:
+    post:
+      tags: [Profile]
+      summary: Upload de foto de perfil
+      description: |
+        Faz upload de uma imagem local (multipart/form-data), guarda no servidor
+        e atualiza o campo `avatar` do utilizador.
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UploadAvatarRequest'
+      responses:
+        '200':
+          description: Foto atualizada com sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UploadAvatarSuccessResponse'
+        '400':
+          description: Erro no upload do ficheiro
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '404':
+          description: Utilizador não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '405':
+          description: Método não permitido
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '422':
+          description: Dados inválidos (user_id/ficheiro/formato/tamanho)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorMessage'
+        '500':
+          description: Erro no servidor ou base de dados
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/ErrorMessage'
+                  - $ref: '#/components/schemas/DbConnectionError'
+
+  /api/profile/update-profile.php:
+    post:
+      tags: [Profile]
+      summary: Atualizar Nome e Bio
+      description: Atualiza os dados de perfil do utilizador na base de dados.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, name]
+              properties:
+                email: { type: string, format: email }
+                name: { type: string }
+                bio: { type: string }
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/SuccessMessage' }
+        '422':
+          description: Erro de validação
+        '500':
+          description: Erro de servidor
+
+  /api/feed/upload-media.php:
+    post:
+      tags: [Feed]
+      summary: Upload de imagem para post
+      description: Faz upload de uma imagem (multipart/form-data) para ser usada num post.
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required: [media]
+              properties:
+                media:
+                  type: string
+                  format: binary
+      responses:
+        '200':
+          description: Upload com sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status: { type: string, example: success }
+                  image_url: { type: string, example: /uploads/media/post_abc.png }
+        '400':
+          description: Erro no upload
+
+  /api/feed/comentarios/get-comments.php:
+    get:
+      tags: [Feed]
+      summary: Listar comentários de um post
+      parameters:
+        - in: query
+          name: post_id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Lista de comentários
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status: { type: string, example: success }
+                  comments:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Comment'
+
+  /api/feed/comentarios/create-comment.php:
+    post:
+      tags: [Feed]
+      summary: Criar um comentário
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [post_id, email, content]
+              properties:
+                post_id: { type: integer }
+                email: { type: string, format: email }
+                content: { type: string }
+      responses:
+        '201':
+          description: Criado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status: { type: string, example: success }
+                  comment:
+                    $ref: '#/components/schemas/Comment'
+
+components:
+  schemas:
+    RegisterRequest:
+      type: object
+      required: [name, email, password]
+      properties:
+        name:
+          type: string
+          example: João Silva
+        email:
+          type: string
+          format: email
+          example: joao@email.com
+        password:
+          type: string
+          format: password
+          description: |
+            Regras atuais: mínimo 8 caracteres, 1 minúscula, 1 maiúscula, 1 número e 1 símbolo.
+          example: SenhaForte#2026
+
+    LoginRequest:
+      type: object
+      required: [email, password]
+      properties:
+        email:
+          type: string
+          format: email
+          example: joao@email.com
+        password:
+          type: string
+          format: password
+          example: SenhaForte#2026
+
+    SuccessMessage:
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
+        message:
+          type: string
+          example: Usuário criado com sucesso!
+
+    ErrorMessage:
+      type: object
+      properties:
+        status:
+          type: string
+          example: error
+        message:
+          type: string
+          example: Dados incompletos.
+
+    DbConnectionError:
+      type: object
+      properties:
+        status:
+          type: string
+          example: error
+        message:
+          type: string
+          example: Falha na ligação à base de dados.
+        details:
+          type: string
+          example: SQLSTATE[08006] [7] connection failed
+
+    LoginSuccessResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
+        message:
+          type: string
+          example: Login realizado com sucesso!
+        user:
+          type: object
+          properties:
+            id:
+              type: integer
+              example: 1
+            name:
+              type: string
+              example: João Silva
+
+    UploadAvatarRequest:
+      type: object
+      required: [user_id, avatar]
+      properties:
+        user_id:
+          type: integer
+          example: 1
+        avatar:
+          type: string
+          format: binary
+          description: Ficheiro de imagem (JPG, PNG, WEBP ou GIF), máximo 5MB.
+
+    UploadAvatarSuccessResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
+        message:
+          type: string
+          example: Foto de perfil atualizada com sucesso.
+        avatar_path:
+          type: string
+          example: /uploads/avatars/user_1_abcd1234efgh5678.png
+        avatar_url:
+          type: string
+          example: http://127.0.0.1:8001/uploads/avatars/user_1_abcd1234efgh5678.png
+
+    # ── Feed ──────────────────────────────────────────────────────────────
+
+    FeedAuthor:
+      type: object
+      properties:
+        name:
+          type: string
+          example: João Silva
+        avatar:
+          type: string
+          example: http://127.0.0.1:8000/uploads/avatars/user_1_abc.png
+
+    FeedPost:
+      type: object
+      properties:
+        id:
+          type: string
+          example: '42'
+        email:
+          type: string
+          example: joao@email.com
+        descricao:
+          type: string
+          example: Olá mundo! 🚀
+        image_url:
+          type: string
+          nullable: true
+          example: null
+        created_at:
+          type: string
+          format: date-time
+          example: '2026-04-19T11:00:00+01:00'
+        author:
+          $ref: '#/components/schemas/FeedAuthor'
+
+    FeedListResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
+        posts:
+          type: array
+          items:
+            $ref: '#/components/schemas/FeedPost'
+        count:
+          type: integer
+          example: 5
+
+    CreatePostRequest:
+      type: object
+      required: [email, descricao]
+      properties:
+        email:
+          type: string
+          format: email
+          example: joao@email.com
+        descricao:
+          type: string
+          maxLength: 2000
+          example: Olá mundo! 🚀
+        image_url:
+          type: string
+          nullable: true
+          example: null
+
+    CreatePostResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: success
+        message:
+          type: string
+          example: Post criado com sucesso!
+        post:
+          $ref: '#/components/schemas/FeedPost'
+
+    DeletePostRequest:
+      type: object
+      required: [post_id, user_id]
+      properties:
+        post_id:
+          type: integer
+          example: 5
+        user_id:
+          type: integer
+          example: 1
+
+    Comment:
+      type: object
+      properties:
+        id: { type: string, example: '1' }
+        email: { type: string, example: joao@email.com }
+        content: { type: string, example: "Excelente post!" }
+        created_at: { type: string, format: date-time }
+        name: { type: string, example: "João Silva" }
+        avatar: { type: string, example: "http://..." }
