@@ -2,7 +2,7 @@
 
 Este projeto é uma rede social funcional, que conta com um sistema de autenticação, um feed de publicações e perfis de utilizador personalizados. No fundo, é uma plataforma completa onde podes partilhar o que quiseres, interagir com outros utilizadores e gerir a tua presença online de forma simples e segura.
 
-## Stack Tecnologica
+## Stack 
 
 ### Frontend
 - React 19 (com Vite)
@@ -20,6 +20,7 @@ Este projeto é uma rede social funcional, que conta com um sistema de autentica
 
 
 ## Estrutura
+```bash
 .
 ├── backend
 │   ├── api
@@ -43,8 +44,7 @@ Este projeto é uma rede social funcional, que conta com um sistema de autentica
 │   │   └── styles
 │   │  
 │   └──tests
-
-
+```
 
 ## Como Iniciar o Projeto
 ### 1. Configuração da Base de Dados (PostgreSQL)
