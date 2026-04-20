@@ -33,7 +33,16 @@ CREATE TABLE IF NOT EXISTS post_comments (
     created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
+-- 4. Tabela de Likes
+CREATE TABLE IF NOT EXISTS post_likes (
+    id_post INTEGER NOT NULL REFERENCES feed(id_post) ON DELETE CASCADE,
+    email VARCHAR(255) NOT NULL REFERENCES users(email) ON DELETE CASCADE,
+    created_at TIMESTAMPTZ DEFAULT NOW(),
+    PRIMARY KEY (id_post, email)
+);
+
 -- Índices Recomendados
 CREATE INDEX IF NOT EXISTS idx_feed_email ON feed(email);
 CREATE INDEX IF NOT EXISTS idx_feed_data ON feed(data_publicacao DESC);
 CREATE INDEX IF NOT EXISTS idx_comments_post ON post_comments(id_post);
+CREATE INDEX IF NOT EXISTS idx_likes_post ON post_likes(id_post);

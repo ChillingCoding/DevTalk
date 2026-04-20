@@ -1,0 +1,48 @@
+# Docker Compose Configuration for DevTalk
+
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: devtalk-db
+    restart: always
+    environment:
+      POSTGRES_DB: Backend
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password123
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  backend:
+    build: 
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: devtalk-backend
+    restart: always
+    depends_on:
+      - db
+    environment:
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: Backend
+      DB_USER: postgres
+      DB_PASS: password123
+    ports:
+      - "8000:80"
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        - VITE_API_BASE_URL=http://localhost:8000
+    container_name: devtalk-frontend
+    restart: always
+    depends_on:
+      - backend
+    ports:
+      - "80:80"
+
+volumes:
+  postgres_data:

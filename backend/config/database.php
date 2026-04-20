@@ -1,5 +1,6 @@
 <?php
-class Database {
+class Database
+{
     /**
      * Propriedades de Configuração: Definem as credenciais e o endereço do servidor PostgreSQL.
      */
@@ -15,25 +16,45 @@ class Database {
      * Inicialização da Ligação: Configura o PDO com as opções de segurança 
      * e tratamento de erros necessárias para o ambiente de produção.
      */
-    public function getConnection() {
+    public function getConnection()
+    {
         $this->conn = null;
         $this->lastError = null;
         try {
-            // String de conexão para PostgreSQL
             $dsn = "pgsql:host=" . $this->host . ";port=" . $this->port . ";dbname=" . $this->db_name;
             $this->conn = new PDO($dsn, $this->username, $this->password);
-            
-            // Define para lançar exceções em caso de erro
             $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        } catch(PDOException $e) {
-            // No REST, erros de conexão devem ser tratados com cuidado
+
+            // Verifica e inicializa a base de dados se estiver vazia
+            $this->initializeDatabaseIfEmpty();
+        } catch (PDOException $e) {
             $this->lastError = $e->getMessage();
             error_log("Erro de conexão: " . $e->getMessage());
         }
         return $this->conn;
     }
 
-    public function getLastError() {
+    private function initializeDatabaseIfEmpty()
+    {
+        try {
+            // Verifica se a tabela principal 'users' existe
+            $check = $this->conn->query("SELECT 1 FROM information_schema.tables WHERE table_name = 'users' LIMIT 1");
+            if ($check->rowCount() == 0) {
+                // Se não existir, corre o script de configuração total
+                $sqlFile = __DIR__ . '/../docs/full_setup.sql';
+                if (file_exists($sqlFile)) {
+                    $sql = file_get_contents($sqlFile);
+                    $this->conn->exec($sql);
+                    error_log("Base de dados inicializada automaticamente pelo motor.");
+                }
+            }
+        } catch (Exception $e) {
+            error_log("Erro na inicialização automática: " . $e->getMessage());
+        }
+    }
+
+    public function getLastError()
+    {
         return $this->lastError;
     }
 }
