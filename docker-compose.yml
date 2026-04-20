@@ -17,7 +17,7 @@ services:
   backend:
     build: 
       context: ./backend
-      dockerfile: api/Dockerfile
+      dockerfile: Dockerfile
     container_name: devtalk-backend
     restart: always
     depends_on:
