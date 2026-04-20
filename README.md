@@ -1,51 +1,73 @@
-# 🚀 DevTalk - Rede Social (Projeto Handover)
+# DevTalk - Rede Social
 
-Este projeto é uma rede social funcional com sistema de autenticação, feed de posts com imagens e emojis, e sistema de comentários.
+Este projeto e uma rede social funcional com sistema de autenticacao, feed de posts e perfil de utilizador.
 
-## 🛠️ Requisitos
-- **Backend**: PHP 8.0+ e PostgreSQL 13+
-- **Frontend**: Node.js 16+ e NPM
+## Stack Tecnologica
 
-## 🏗️ Configuração do Backend (PHP/PostgreSQL)
+### Frontend
+- React 19 (com Vite)
+- TypeScript
+- Tailwind CSS (Estilizacao)
+- Lucide React (Icones)
+- Radix UI (Componentes acessiveis)
+- Axios (Comunicacao API)
+- Vitest (Testes unitários)
 
-1. **Base de Dados**:
-   - Cria uma base de dados no PostgreSQL chamada `Backend` (ou o nome que preferires).
-   - Executa o script de configuração total localizado em: `backend/docs/full_setup.sql`.
-   - *Dica*: Podes usar o comando `psql -U teu_usuario -d Backend -f backend/docs/full_setup.sql`.
+### Backend
+- PHP 8.0+
+- PostgreSQL (Base de dados)
+- PDO (Camada de abstracao de dados)
 
-2. **Ligação (PHP)**:
-   - Edita o ficheiro `backend/config/database.php` e insere as tuas credenciais do PostgreSQL (host, porta, utilizador, password).
+## Como Iniciar o Projeto
 
-3. **Pastas de Media**:
-   - Certifica-te de que a pasta `backend/uploads/media` existe e tem permissões de escrita para o servidor PHP.
+### 1. Configuracao da Base de Dados (PostgreSQL)
 
-4. **Servidor**:
-   - Inicia o servidor PHP a apontar para a pasta `backend/`:
-     ```bash
-     php -S 127.0.0.1:8000
-     ```
+1. Crie uma base de dados chamada `Backend` no seu servidor PostgreSQL.
+2. Execute o script SQL inicial:
+   ```bash
+   psql -U seu_utilizador -d Backend -f backend/docs/full_setup.sql
+   ```
+3. Execute o script de configuracao de likes para criar a tabela necessaria:
+   ```bash
+   php backend/api/feed/setup_likes.php
+   ```
 
-## 💻 Configuração do Frontend (React + Vite)
+### 2. Configurar o Backend (PHP)
 
-1. **Instalação**:
-   - Navega para a pasta `frontend/` e instala as dependências:
-     ```bash
-     npm install
-     ```
+1. Edite o ficheiro `backend/config/database.php` com as suas credenciais do PostgreSQL (host, porta, utilizador, password).
+2. Certifique-se de que a pasta `backend/uploads` tem permissoes de escrita.
+3. Inicie o servidor local do PHP a partir da raiz da pasta `backend/`:
+   ```bash
+   cd backend
+   php -S 127.0.0.1:8000
+   ```
 
-2. **Ambiente**:
-   - Se o teu backend não estiver a correr em `http://127.0.0.1:8000`, cria um ficheiro `.env` na raiz da pasta `frontend/` com:
-     ```env
-     VITE_API_BASE_URL=http://teu-endereco-backend
-     ```
+### 3. Configurar o Frontend (React)
 
-3. **Execução**:
-   - Inicia o modo de desenvolvimento:
-     ```bash
-     npm run dev
-     ```
-   - O site estará disponível, por defeito, em `http://localhost:5173`.
+1. Navegue para a pasta do frontend:
+   ```bash
+   cd frontend
+   ```
+2. Instale as dependencias:
+   ```bash
+   npm install
+   ```
+3. (Opcional) Crie um ficheiro `.env` se o backend nao estiver em `http://127.0.0.1:8000`:
+   ```env
+   VITE_API_BASE_URL=http://seu-endereco-backend
+   ```
+4. Inicie o servidor de desenvolvimento:
+   ```bash
+   npm run dev
+   ```
 
-## 📝 Notas de Versão
-- O sistema de **Username (@handle)** foi removido para simplificar a experiência, usando agora apenas o **Nome Real** para identificação em posts e comentários.
-- Suporte para **upload de fotos** em posts principais e **emojis** tanto em posts como em comentários.
+O frontend estara acessivel em `http://localhost:5173`.
+
+## Testes
+
+### Frontend
+Para correr os testes do frontend:
+```bash
+cd frontend
+npm run test
+```
