@@ -52,6 +52,13 @@
       docker-compose up -d --build
    ```
    2. Abra o navegador e acesse: http://localhost:80
+   
+   ### Como Parar o Projeto
+   Para desligar todos os serviços e fechar a plataforma em segurança, executa este comando no terminal:
+   ```bash
+   docker-compose down
+   ```
+
    ## Testes
    ### Frontend
    Para correr os testes do frontend:
