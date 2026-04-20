@@ -1,26 +1,53 @@
 # DevTalk - Rede Social
 
-Este projeto e uma rede social funcional com sistema de autenticacao, feed de posts e perfil de utilizador.
+Este projeto é uma rede social funcional, que conta com um sistema de autenticação, um feed de publicações e perfis de utilizador personalizados. No fundo, é uma plataforma completa onde podes partilhar o que quiseres, interagir com outros utilizadores e gerir a tua presença online de forma simples e segura.
 
 ## Stack Tecnologica
 
 ### Frontend
 - React 19 (com Vite)
 - TypeScript
-- Tailwind CSS (Estilizacao)
+- Tailwind CSS (Estilização)
 - Lucide React (Icones)
 - Radix UI (Componentes acessiveis)
-- Axios (Comunicacao API)
+- Axios (Comunicação API)
 - Vitest (Testes unitários)
 
 ### Backend
 - PHP 8.0+
 - PostgreSQL (Base de dados)
-- PDO (Camada de abstracao de dados)
+- RestAPI
+
+
+## Estrutura
+.
+├── backend
+│   ├── api
+│   │     ├── auth
+│   │     ├── feed
+│   │     │     ├── comentarios
+│   │     │     └── likes
+│   │     └── profile
+│   ├── config
+│   ├── docs
+│   ├── tests
+│   ├── uploads
+│   │    ├── avatars
+│   │    └── media
+│   └── openapi.yaml
+├── frontend
+│   ├──src 
+│   │   ├── components
+│   │   ├── contexts
+│   │   ├── pages
+│   │   └── styles
+│   │  
+│   └──tests
+├── .github/workflows
+
 
 ## Como Iniciar o Projeto
-
-### 1. Configuracao da Base de Dados (PostgreSQL)
+### 1. Configuração da Base de Dados (PostgreSQL)
 
 1. Crie uma base de dados chamada `Backend` no seu servidor PostgreSQL.
 2. Execute o script SQL inicial:
@@ -52,11 +79,7 @@ Este projeto e uma rede social funcional com sistema de autenticacao, feed de po
    ```bash
    npm install
    ```
-3. (Opcional) Crie um ficheiro `.env` se o backend nao estiver em `http://127.0.0.1:8000`:
-   ```env
-   VITE_API_BASE_URL=http://seu-endereco-backend
-   ```
-4. Inicie o servidor de desenvolvimento:
+3. Inicie o servidor de desenvolvimento:
    ```bash
    npm run dev
    ```
@@ -71,3 +94,4 @@ Para correr os testes do frontend:
 cd frontend
 npm run test
 ```
+### Backend
