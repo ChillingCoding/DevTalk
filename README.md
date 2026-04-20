@@ -5,18 +5,17 @@
    ## Stack 
 
    ### Frontend
-   - React 19 (com Vite)
+   - React + Vite
    - TypeScript
-   - Tailwind CSS (Estilização)
-   - Lucide React (Icones)
-   - Radix UI (Componentes acessiveis)
-   - Axios (Comunicação API)
-   - Vitest (Testes unitários)
-
+   - Tailwind CSS
+   
    ### Backend
-   - PHP 8.0+
-   - PostgreSQL (Base de dados)
+   - PHP 
+   - PostgreSQL
    - RestAPI
+
+   ### DevOps
+   - Docker
 
 
    ## Estrutura
@@ -36,52 +35,23 @@
    │   │    ├── avatars
    │   │    └── media
    │   └── openapi.yaml
-   └── frontend
-         ├──src 
-         │   ├── components
-         │   ├── contexts
-         │   ├── pages
-         │   └── styles
-         │  
-         └──tests
+   ├── frontend
+   │     ├──src 
+   │     │   ├── components
+   │     │   ├── contexts
+   │     │   ├── pages
+   │     │   └── styles
+   │     │  
+   │     └──tests
+   └── docker-compose.yml
    ```
 
    ## Como Iniciar o Projeto
-   ### 1. Configurar o Frontend
-   1. Vai para o diretório do frontend:
-      ```bash
-      cd frontend
-      ````
-   2. Instale e executa as dependencias:
-      ```bash
-      npm install
-      npm run dev
-      ```
-
-   ### 2. Configurar o Backend 
-   1. Introduza estes comandos
-      ```bash
-      cd backend
-      cp .env.example .env
-      ```
-
-   2. Inicia o servidor
+   1. Abra o terminal e execute o comando na pasta do projeto: 
    ```bash
-   php -S 127.0.0.1:8000
+      docker-compose up -d --build
    ```
-
-   ### 2. Configurar o Backend (PHP)
-
-   1. Edite o ficheiro `backend/config/database.php` com as suas credenciais do PostgreSQL (host, porta, utilizador, password).
-   2. Certifique-se de que a pasta `backend/uploads` tem permissoes de escrita.
-   3. Inicie o servidor local do PHP a partir da raiz da pasta `backend/`:
-      ```bash
-      cd backend
-      php -S 127.0.0.1:8000
-      ```
-
-
-
+   2. Abra o navegador e acesse: http://localhost:80
    ## Testes
    ### Frontend
    Para correr os testes do frontend:
@@ -90,3 +60,8 @@
    npm run test
    ```
    ### Backend
+   Para correr os testes da lógica do backend:
+   ```bash
+   cd backend
+   php tests/UserLogicTest.php
+   ```
