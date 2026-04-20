@@ -1,5 +1,5 @@
 <?php
-// 1. Headers para REST API e CORS
+//Headers para REST API e CORS
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Methods: POST, OPTIONS");
@@ -25,7 +25,7 @@ if ($db === null) {
     exit();
 }
 
-//Receber os dados do login (email e password)
+//Recebe os dados do login 
 $data = json_decode(file_get_contents("php://input"));
 
 if (!empty($data->email) && !empty($data->password)) {
@@ -41,8 +41,7 @@ if (!empty($data->email) && !empty($data->password)) {
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if ($row) {
-            //Verificar se a senha está correta
-            // O password_verify compara a senha pura com o Hash do banco
+            //Verifica se a senha está correta
             if (password_verify((string)$data->password, $row['password'])) {
                 http_response_code(200);
                 echo json_encode([

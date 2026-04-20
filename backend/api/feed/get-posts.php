@@ -1,10 +1,7 @@
 <?php
 
 
-/**
- * Configuração de Cabeçalhos: Garante que a API pode ser acedida pelo frontend (CORS) 
- * e desativa a cache para garantir dados sempre atualizados.
- */
+
 header('Access-Control-Allow-Origin: *');
 header('Content-Type: application/json; charset=UTF-8');
 header('Access-Control-Allow-Methods: GET, OPTIONS');
@@ -92,12 +89,9 @@ try {
     $host     = $_SERVER['HTTP_HOST'] ?? '127.0.0.1:8000';
     $baseUrl  = $protocol . '://' . $host;
 
-    /**
-     * Processamento de Resultados: Normaliza URLs de avatares e imagens para garantir 
-     * que o frontend recebe caminhos absolutos e válidos.
-     */
+    
     $posts = array_map(function (array $row) use ($baseUrl): array {
-        //Normaliza avatar
+       
         $avatar = $row['author_avatar'] ?? '';
         if (!empty($avatar) && !preg_match('/^https?:\/\//i', $avatar)) {
             $avatar = $baseUrl . (str_starts_with($avatar, '/') ? $avatar : '/' . $avatar);

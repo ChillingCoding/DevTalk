@@ -34,11 +34,9 @@ if ($db === null) {
 $data = json_decode(file_get_contents('php://input'));
 
 try {
-    //Garantir que a tabela existe
-    /**
-     * Integridade de Dados: Garante que a tabela de likes existe antes de qualquer operação.
-     * Útil para uma configuração "zero-config" no handover do projeto.
-     */
+   
+    
+    //Garante que a tabela de likes existe antes de qualquer operação.
     $db->exec("
         CREATE TABLE IF NOT EXISTS post_likes (
             id_post INTEGER NOT NULL REFERENCES feed(id_post) ON DELETE CASCADE,
@@ -64,10 +62,7 @@ try {
     $check->execute();
     $isLiked = (bool)$check->fetch();
     
-    /**
-     * Lógica de Alternância (Toggle): 
-     * Se o registo existe, remove (Unlike). Se não existe, insere (Like).
-     */
+   
     if ($isLiked) {
         //Remover Like (Unlike)
         $stmt = $db->prepare('DELETE FROM post_likes WHERE id_post = :post_id AND email = :email');
