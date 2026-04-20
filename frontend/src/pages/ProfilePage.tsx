@@ -413,12 +413,12 @@ export function ProfilePage() {
           <div className="h-40 sm:h-48 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 relative group">
             <img src={user?.coverImage} alt="Cover" className="w-full h-full object-cover" />
             <button
-              className="absolute bottom-3 right-3 sm:bottom-4 sm:right-4 bg-black hover:bg-black/90 text-white p-2 rounded-full opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity"
+              className="absolute bottom-3 right-3 sm:bottom-4 sm:right-4 bg-gray-900/80 border-2 border-white hover:bg-gray-900 text-white p-1.5 sm:p-2 rounded-full transition-colors shadow-md"
               type="button"
               onClick={() => setIsCoverDialogOpen(true)}
               title="Alterar imagem de fundo"
             >
-              <Camera className="w-5 h-5" />
+              <Camera className="w-4 h-4 sm:w-5 sm:h-5" />
             </button>
           </div>
 
@@ -429,12 +429,12 @@ export function ProfilePage() {
                 <AvatarFallback className="text-2xl sm:text-3xl">{user?.name.charAt(0)}</AvatarFallback>
               </Avatar>
               <button
-                className="absolute inset-0 bg-black hover:bg-black/90 text-white rounded-full opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity flex items-center justify-center"
+                className="absolute bottom-0 right-0 bg-gray-900/80 border-2 border-white hover:bg-gray-900 text-white rounded-full p-1.5 sm:p-2 transition-colors flex items-center justify-center shadow-md translate-x-1/4 translate-y-1/4"
                 onClick={openFilePicker}
                 type="button"
                 title="Alterar foto de perfil"
               >
-                <Camera className="w-5 h-5 sm:w-6 sm:h-6" />
+                <Camera className="w-4 h-4 sm:w-5 sm:h-5" />
               </button>
             </div>
           </div>
