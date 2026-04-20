@@ -36,14 +36,14 @@ Este projeto é uma rede social funcional, que conta com um sistema de autentica
 │   │    ├── avatars
 │   │    └── media
 │   └── openapi.yaml
-├── frontend
-│   ├──src 
-│   │   ├── components
-│   │   ├── contexts
-│   │   ├── pages
-│   │   └── styles
-│   │  
-│   └──tests
+└── frontend
+      ├──src 
+   │  ├── components
+   │  ├── contexts
+   │  ├── pages
+   │  └── styles
+   │  
+   └──tests
 ```
 
 ## Como Iniciar o Projeto
