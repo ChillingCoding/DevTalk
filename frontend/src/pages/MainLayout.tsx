@@ -39,7 +39,7 @@ export function MainLayout() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                   </svg>
                 </div>
-                <span className="hidden sm:inline font-bold text-xl text-gray-900">DevTalk</span>
+                <span className="font-bold text-xl text-gray-900">DevTalk</span>
               </Link>
 
               <nav className="hidden md:flex items-center gap-1">
