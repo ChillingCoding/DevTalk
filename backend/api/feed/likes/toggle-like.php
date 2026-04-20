@@ -20,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit();
 }
 
-include_once __DIR__ . '/../../config/database.php';
+include_once __DIR__ . '/../../../config/database.php';
 
 $database = new Database();
 $db = $database->getConnection();

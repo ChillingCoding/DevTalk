@@ -170,7 +170,7 @@ export function FeedPage() {
     );
 
     try {
-      const res = await fetch(buildApiUrl('/api/feed/toggle-like.php'), {
+      const res = await fetch(buildApiUrl('/api/feed/likes/toggle-like.php'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ post_id: Number(postId), email: user.email }),
