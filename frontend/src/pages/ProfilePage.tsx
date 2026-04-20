@@ -440,14 +440,11 @@ export function ProfilePage() {
           </div>
         </div>
 
-        <div className="pt-14 sm:pt-20 px-4 sm:px-8 pb-6">
-          <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 mb-4">
-            <div>
-              <h1 className="text-xl sm:text-2xl font-bold text-gray-900">{user?.name}</h1>
-            </div>
+        <div className="px-4 sm:px-8 pb-6">
+          <div className="flex justify-end pt-3 sm:pt-4 mb-2 sm:mb-4">
             <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
               <DialogTrigger asChild>
-                <Button variant="outline" className="gap-2">
+                <Button variant="outline" className="gap-2 shrink-0">
                   <Settings className="w-4 h-4" />
                   Editar Perfil
                 </Button>
@@ -486,7 +483,12 @@ export function ProfilePage() {
             </Dialog>
           </div>
 
-          <p className="text-gray-700 mb-4">{user?.bio}</p>
+          <div className="mb-4">
+            <h1 className="text-xl sm:text-2xl font-bold text-gray-900">{user?.name}</h1>
+            <p className="text-gray-700 mt-2 whitespace-pre-wrap">{user?.bio}</p>
+          </div>
+
+
 
           <div className="flex flex-wrap gap-4 text-sm text-gray-600 mb-6">
             <div className="flex items-center gap-1">
