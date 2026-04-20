@@ -44,5 +44,16 @@ services:
     ports:
       - "80:80"
 
+  swagger:
+    image: swaggerapi/swagger-ui
+    container_name: devtalk-swagger
+    restart: always
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./backend/openapi.yaml:/tmp/openapi.yaml
+    environment:
+      SWAGGER_JSON: /tmp/openapi.yaml
+
 volumes:
   postgres_data:
