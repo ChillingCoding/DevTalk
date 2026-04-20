@@ -64,7 +64,7 @@ try {
     
    
     if ($isLiked) {
-        //Remover Like (Unlike)
+        //Remover Like 
         $stmt = $db->prepare('DELETE FROM post_likes WHERE id_post = :post_id AND email = :email');
     } else {
         //Adicionar Like

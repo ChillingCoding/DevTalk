@@ -50,7 +50,7 @@ $filename = uniqid('media_', true) . '.' . $extension;
 $destination = $uploadDir . $filename;
 
 if (move_uploaded_file($file['tmp_name'], $destination)) {
-    //Retornamos caminho relativo para gravacao na DB + construção dinamica
+    
     $relativePath = '/uploads/media/' . $filename;
     
     
