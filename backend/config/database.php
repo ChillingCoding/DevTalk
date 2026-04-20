@@ -4,11 +4,19 @@ class Database
     /**
      * Propriedades de Configuração: Definem as credenciais e o endereço do servidor PostgreSQL.
      */
-    private $host = "localhost";
-    private $port = "5433";
-    private $db_name = "Backend";
-    private $username = "renato";
-    private $password = "";
+    private $host;
+    private $port;
+    private $db_name;
+    private $username;
+    private $password;
+
+    public function __construct() {
+        $this->host = getenv('DB_HOST') ?: "localhost";
+        $this->port = getenv('DB_PORT') ?: "5433";
+        $this->db_name = getenv('DB_NAME') ?: "Backend";
+        $this->username = getenv('DB_USER') ?: "renato";
+        $this->password = getenv('DB_PASS') !== false ? getenv('DB_PASS') : "";
+    }
     public $conn;
     private $lastError = null;
 
